@@ -38,15 +38,24 @@ intensities = downsample(intensities,4);
 
 
 %% Define crystal
-BF = 0.015; % Birefringence (delta n); -0.30 for MSU and 0.0155 for CPP
-r = 1E-6; % Radiance of crystal (m)
-l = 5E-6; % Length of crystal (m)
-angle = pi/4; % Angle of crystal in radians with respect to the polarizer
 
 Gridsize_px=100; % Gridsize in pixels
 Gridsize_m = 10E-6; % Size of pixels in grid
 
-[d,ang] = rod(r,l,angle,Gridsize_m,Gridsize_px); % Calls a function 'rod' which is in a separate file
+% For rod
+%BF = 0.8; % Birefringence (delta n); -0.30 for MSU and 0.0155 for CPP
+%r = 1E-6; % Radiance of crystal (m)
+%l = 5E-6; % Length of crystal (m)
+%angle = 2*pi/8; % Angle of crystal in radians with respect to the polarizer
+%[d,ang] = rod(r,l,angle,Gridsize_m,Gridsize_px); % Calls a function 'rod' which is in a separate file
+
+% For Maltese Cross
+BF = 1; 
+r = 2.5E-6;
+ne = 1.46;
+no = 1.40;
+[d,ang] = MCross(r,ne,no,Gridsize_m,Gridsize_px); 
+
 
 %% Calculate image
 I_out_Hg = zeros(size(lambda,1),100,100); % Prelocate data to save time
@@ -62,9 +71,9 @@ dphiqwl = (2*pi/lambda(i))*550E-9; % Calculate the retardance for the additional
 for j = 1:Sz_Hg(1) % Loop over one axis
     for k = 1:Sz_Hg(2) % Loop over other axis
         dphi=H_dphi(j,k); % Take the retardance of the current pixel
-        %*BFO(pi/4,dphiqwl)
+        %
         % Calculate output
-        I_out_Hg(i,j,k) = norm(I_in*H*BFO(ang(j,k),dphi)*LP(pi/2));
+        I_out_Hg(i,j,k) = norm(I_in*H*BFO(ang(j,k),dphi)*BFO(pi/4,dphiqwl)*LP(pi/2));
     end
 end
 
