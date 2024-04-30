@@ -105,7 +105,7 @@ def MCross(r, ne, no, Gridsize_m, Gridsize_px):
 
 
 # Load LED spectrum
-LED_spectrum = pd.read_csv(r'/Users/tom/Documents/Python/LED_spectrum.csv', delimiter="\t")
+LED_spectrum = pd.read_csv(r'PATH_HERE', delimiter="\t")
 LED_spectrum = np.array(LED_spectrum)
 lambda_vals = LED_spectrum[:, 0] / 1E9  # Wavelengths array
 intensities = LED_spectrum[:, 1]  # Intensities per wavelength
